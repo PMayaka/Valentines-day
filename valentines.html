@@ -363,6 +363,7 @@
         <div class="success-container">
             <div class="success-text">YESSSSSSSSSSSSSSS </div>
             <div class="hearts">💕💖💗💕💖💗</div>
+            <p>Phillip would like to take you on a special date, february 14th at 7:30pm. Let him know if your available!</p>
         </div>
     </div>
 
@@ -606,35 +607,8 @@
             noBtn.style.transform = 'none';
         }
 
-        // Send a POST to the local server API (if available) to notify that
-        // the YES button was clicked. If the fetch fails, fall back to a
-        // mailto: link which opens the user's email client.
-        let yesSent = false;
-        async function sendYesClicked() {
-            if (yesSent) return;
-            yesSent = true;
-            const payload = { timestamp: Date.now(), page: 'valentines.html' };
-            try {
-                const res = await fetch('/api/yes-click', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                if (!res.ok) throw new Error('Server responded ' + res.status);
-                console.log('Yes-click notification sent to server.');
-            } catch (err) {
-                console.warn('Could not send yes-click to server:', err);
-                // Fallback: open mail client with prefilled message
-                const subject = encodeURIComponent('Valentine YES clicked');
-                const body = encodeURIComponent('The YES button was clicked on valentines.html at ' + new Date().toString());
-                window.location.href = `mailto:phillipmayaka@gmail.com?subject=${subject}&body=${body}`;
-            }
-        }
-
         // Valentine page logic
-        document.getElementById('yes-btn').addEventListener('click', async () => {
-            // Attempt to notify server / fallback to mailto
-            await sendYesClicked();
+        document.getElementById('yes-btn').addEventListener('click', () => {
             document.getElementById('valentine-page').classList.add('hidden');
             document.getElementById('success-page').style.display = 'flex';
         });
